@@ -11,7 +11,7 @@ function swaggerConfig(app) {
             }
         },
     
-        apis: []
+        apis: [process.cwd() + '/src/modules/**/*.swagger.js'],
     
     });
     
