@@ -1,0 +1,16 @@
+const { Schema, model } = require("mongoose");
+
+const userSchema = new Schema({
+    fullName: {type: String, required: false},
+    mobile: {type: String, unique: true, required: true},
+    otp: {type: OtpSchema},
+    verifiedMobile: {type: Boolean, require: true, default: false}
+}, {timestamps: true})
+const OtpSchema = new Schema({
+    code: {type: String, required: false, default: undefined},
+    expiresIn: {type: Number, required: false, default: 0}
+});
+
+const userModel = model('user', userSchema);
+
+module.exports = userModel;
