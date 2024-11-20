@@ -9,19 +9,28 @@ class authController {
         this.#service = authService;
     }
     async sendOTP(req, res, next) {
+        console.log('Received request to send OTP:', req.body);
         try {
-            const {mobile} = req.body;
-            await this.#service.sendOTP(mobile);
-            return {
-                message: authMessages.sendOtpSuccessfully
-            }
+            const { mobile } = req.body;
+            const user = await this.#service.sendOTP(mobile);
+            return res.json({
+                message: authMessages.sendOtpSuccessfully,
+                user
+            });
         } catch (error) {
+            console.error('Error in sendOTP:', error);
             next(error);
         }
     }
+    
+    
     async checkOTP(req, res, next) {
         try {
-            
+            const {mobile, code} = req.body;
+            await this.#service.checkOTP(mobile, code);
+            return {
+                message: authMessages.loginSuccessfull,
+            }
         } catch (error) {
             next(error);
         }
