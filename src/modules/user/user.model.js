@@ -9,7 +9,8 @@ const userSchema = new Schema({
     fullName: { type: String, required: false },
     mobile: { type: String, unique: true, required: true },
     otp: { type: OTPSchema },
-    verifiedMobile: { type: Boolean, required: true, default: false }
+    verifiedMobile: { type: Boolean, required: true, default: false },
+    accessToken: { type: String }
 }, { timestamps: true });
 
 const userModel = model('user', userSchema);
