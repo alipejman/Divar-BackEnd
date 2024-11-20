@@ -39,19 +39,21 @@ class authService {
 }
 
 
-  async checkOTP(mobile, code) {
-    const user = await this.checkExistByMobile(mobile);
+async checkOTP(mobile, code) {
+  const now = new Date().getTime();
+  const user = await this.checkExistByMobile(mobile);
 
-    if (user?.otp?.expiresIn > now)
-      throw new createHttpError.Unauthorized(authMessages.otpCodeExpireIn);
-    if (user?.otp?.code !== code)
-      throw new createHttpError.Unauthorized(authMessages.otpCodeIsIncorrect);
-    if (!user.verifiedMobile) {
-      user.verifiedMobile = true;
-      await user.save();
-    }
-    return user;
+  if (user?.otp?.expiresIn < now)
+    throw new createHttpError.Unauthorized(authMessages.otpCodeExpireIn);
+  if (user?.otp?.code !== code)
+    throw new createHttpError.Unauthorized(authMessages.otpCodeIsIncorrect);
+  if (!user.verifiedMobile) {
+    user.verifiedMobile = true;
+    await user.save();
   }
+  return user;
+}
+
   async logout() {}
 
   async checkExistByMobile(mobile) {

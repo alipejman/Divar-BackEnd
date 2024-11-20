@@ -17,11 +17,11 @@ async function main() {
     const PORT = process.env.PORT;
 
 
-    swaggerConfig(app);
-
-    
     app.use(mainRouter);
-
+    
+    
+    swaggerConfig(app);
+    
     
     require('./src/config/mongoose.config');
 
