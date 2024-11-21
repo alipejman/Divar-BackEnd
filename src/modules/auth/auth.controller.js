@@ -1,6 +1,7 @@
 const autoBind = require("auto-bind");
 const authService = require("./auth.service");
 const { authMessages } = require("./auth.messages");
+const nodeEnv = require("../../common/constant/env.enum");
 
 class authController {
     #service;
@@ -28,7 +29,11 @@ class authController {
         try {
             const {mobile, code} = req.body;
             const token = await this.#service.checkOTP(mobile, code);
-            return res.json({
+            return res.cookie('access_token', token, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === nodeEnv.production,
+                
+            }).status(200).json({
                 message: authMessages.loginSuccessfull,
                 token
             }) 
