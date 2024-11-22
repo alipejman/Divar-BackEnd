@@ -44,7 +44,7 @@ class authController {
     }
     async logout(req, res, next) {
         try {
-            
+            return res.clearCookie()
         } catch (error) {
             next(error);
         }
