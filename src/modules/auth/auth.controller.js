@@ -2,6 +2,7 @@ const autoBind = require("auto-bind");
 const authService = require("./auth.service");
 const { authMessages } = require("./auth.messages");
 const nodeEnv = require("../../common/constant/env.enum");
+const cookieName = require("../../common/constant/cookie.enum");
 
 class authController {
     #service;
@@ -29,7 +30,7 @@ class authController {
         try {
             const {mobile, code} = req.body;
             const token = await this.#service.checkOTP(mobile, code);
-            return res.cookie('access_token', token, {
+            return res.cookie(cookieName.accessToken, token, {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === nodeEnv.production,
                 
@@ -44,7 +45,9 @@ class authController {
     }
     async logout(req, res, next) {
         try {
-            return res.clearCookie()
+            return res.clearCookie(cookieName.accessToken).status(200).json({
+                message: 'Log Out Seccessfylly..'
+            })
         } catch (error) {
             next(error);
         }
