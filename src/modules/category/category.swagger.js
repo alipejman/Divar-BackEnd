@@ -41,6 +41,13 @@
  *         application/json:
  *           schema:
  *             $ref: '#/components/schemas/CreateCategory'
+ *     responses:
+ *       201:
+ *         description: Created category
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/CreateCategory'
  */
 
 /**
