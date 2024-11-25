@@ -23,6 +23,13 @@
  *           type: string
  *         parent:
  *           type: string
+ *     deleteCategory:
+ *       type: object
+ *       required:
+ *         - id
+ *       properties:
+ *         id:
+ *           type: string
  */
 
 /**
@@ -67,3 +74,4 @@
  *               items:
  *                 $ref: '#/components/schemas/CreateCategory'
  */
+

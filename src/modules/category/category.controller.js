@@ -30,6 +30,9 @@ class CategoryController {
             next(error);
         }
     }
+
+    
+    
 }
 
 module.exports = new CategoryController();

@@ -41,6 +41,7 @@ class CategoryService {
     return category;
   }
 
+
   async checkExistById(id) {
     const category = await this.#model.findById(id);
     if (!category) throw new createHttpError.NotFound(categoryMessage.NotFound);
