@@ -149,3 +149,53 @@
  *       200:
  *         description: A list of options for the category
  */
+
+/**
+ * @swagger
+ * /option/{Id}:
+ *   put:
+ *     summary: Update an option by Id
+ *     tags:
+ *       - Option
+ *     parameters:
+ *       - name: Id
+ *         in: path
+ *         required: true
+ *         description: The ID of the option to update
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/x-www-form-urlencoded:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *               key:
+ *                 type: string
+ *               category:
+ *                 type: string
+ *               guid:
+ *                 type: string
+ *               required:
+ *                 type: boolean
+ *               type:
+ *                 type: string
+ *                 enum:
+ *                   - number
+ *                   - string
+ *                   - boolean
+ *                   - array
+ *               enum:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/CreateOption'
+ *     responses:
+ *       200:
+ *         description: The updated option
+ */

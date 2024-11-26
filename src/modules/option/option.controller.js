@@ -23,6 +23,22 @@ class optionController {
         }
     }
 
+
+    async update(req, res, next) {
+        try {
+            const { id } = req.params;
+            const optionDto = req.body; // اطلاعات جدید برای آپدیت
+            const updatedOption = await this.#service.updateById(id, optionDto);
+            return res.json({
+                message: optionMessage.updated
+            });
+        } catch (error) {
+            console.error(error);
+            next(error);
+        }
+    }
+    
+
     async findByCategoryId(req, res, next) {
         try {
             const { categoryId } = req.params;

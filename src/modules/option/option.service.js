@@ -48,6 +48,25 @@ class optionService {
     return option;
   }
 
+
+  async updateById(id, optionDto) {
+    const option = await this.checkExistById(id);
+    
+    // اگر کلید جدیدی وجود دارد، آن را به روز کنید
+    if (optionDto.key) {
+        optionDto.key = slugify(optionDto.key, {
+            trim: true,
+            replacement: "_",
+            lower: true,
+        }).toLowerCase();
+    }
+
+    // به روز رسانی گزینه
+    const updatedOption = await this.#model.findByIdAndUpdate(id, optionDto, { new: true });
+    return updatedOption;
+}
+
+
   async findById(id) {
     return await this.checkExistById(id);
   }
