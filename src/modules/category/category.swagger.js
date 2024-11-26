@@ -68,3 +68,29 @@
  *                 $ref: '#/components/schemas/CreateCategory'
  */
 
+/**
+ * @swagger
+ * /category/{id}:
+ *   delete:
+ *     summary: Delete category by id
+ *     tags: 
+ *       - Category
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: The ID of the category to delete
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Deleted category
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Category deleted successfully"
+ */

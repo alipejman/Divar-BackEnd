@@ -26,11 +26,12 @@ class optionController {
 
     async update(req, res, next) {
         try {
+            const {title, key, category, guid, required, type, enum: list} = req.body;
             const { id } = req.params;
-            const optionDto = req.body; // اطلاعات جدید برای آپدیت
-            const updatedOption = await this.#service.updateById(id, optionDto);
+            const updatedOption = await this.#service.updateById(id, {title, key, category, guid, required, type, enum: list});
             return res.json({
-                message: optionMessage.updated
+                message: optionMessage.updated,
+
             });
         } catch (error) {
             console.error(error);

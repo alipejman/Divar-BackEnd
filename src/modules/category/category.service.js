@@ -4,12 +4,15 @@ const { isValidObjectId, Types, set } = require("mongoose");
 const createHttpError = require("http-errors");
 const slugify = require("slugify");
 const { categoryMessage } = require("./category.message");
+const optionModel = require("../option/option.model");
 
 class CategoryService {
   #model;
+  #optionModel;
   constructor() {
     autoBind(this);
     this.#model = categoryModel;
+    this.#optionModel = optionModel;
   }
 
   async find() {
@@ -59,6 +62,14 @@ class CategoryService {
     if (category)
       throw new createHttpError.Conflict(categoryMessage.alreadyExist);
     return null;
+  }
+
+  async deleteCategory(id) {
+    await this.checkExistById(id);
+    await this.#optionModel.deleteMany({category: id}).then(async () => {
+      await this.#model.deleteMany({_id : id});
+    })
+    return true;
   }
 }
 

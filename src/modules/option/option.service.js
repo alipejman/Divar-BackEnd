@@ -52,7 +52,6 @@ class optionService {
   async updateById(id, optionDto) {
     const option = await this.checkExistById(id);
     
-    // اگر کلید جدیدی وجود دارد، آن را به روز کنید
     if (optionDto.key) {
         optionDto.key = slugify(optionDto.key, {
             trim: true,
@@ -61,10 +60,23 @@ class optionService {
         }).toLowerCase();
     }
 
-    // به روز رسانی گزینه
-    const updatedOption = await this.#model.findByIdAndUpdate(id, optionDto, { new: true });
+    if (!optionDto.category || typeof optionDto.category !== 'string' || optionDto.category.trim() === '') {
+      delete optionDto.category;
+  }
+  
+
+    if (optionDto.enum) {
+        if (typeof optionDto.enum === 'string') {
+            optionDto.enum = optionDto.enum.split(',').map(item => item.trim());
+        } else if (!Array.isArray(optionDto.enum)) {
+            optionDto.enum = [];
+        }
+    }
+
+    const updatedOption = await this.#model.findByIdAndUpdate(id, optionDto, { $set: optionDto });
     return updatedOption;
 }
+
 
 
   async findById(id) {

@@ -31,6 +31,18 @@ class CategoryController {
         }
     }
 
+    async deleteCategory(req, res, next) {
+       try {
+        const {id} = req.params;
+        const categories = await this.#service.deleteCategory(id);
+        return res.json({
+            message: categoryMessage.delete
+        })
+       } catch (error) {
+        next(error);
+       }
+    }
+
     
     
 }
