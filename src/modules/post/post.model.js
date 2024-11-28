@@ -1,7 +1,8 @@
-const { Types } = require("mongoose");
+const { Types, model, Schema } = require("mongoose");
 const { schema } = require("../category/category.model");
+const timespan = require("jsonwebtoken/lib/timespan");
 
-const postSchema = new schema({
+const postSchema = new Schema({
     title: {type: String, required: true},
     content: {type: String, required: true},
     category: {type: Types.ObjectId, ref: 'Category', required: true},
@@ -11,4 +12,8 @@ const postSchema = new schema({
     coordinate: {type: [Number], required: true},
     image: {type: [String], required: false, default: []
     }
-})
+}, {timespan: true})
+
+const postModel = model('post', postSchema);
+
+module.exports = postModel;
