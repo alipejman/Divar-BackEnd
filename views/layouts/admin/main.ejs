@@ -1,39 +1,130 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="fa">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>دیوار - آگهی های رایگان خرید و فروش</title>
+    <link
+      rel="shortcut icon"
+      type="image/png"
+      href="/assets/images/logos/divar.svg"
+    />
+    <link rel="stylesheet" href="/assets/css/styles.css" />
+    <link rel="stylesheet" href="/dist/css/mapp.min.css" />
+    <link rel="stylesheet" href="/dist/css/fa/style.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+  </head>
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>دیوار  - آگهی های رایگان خرید و فروش</title>
-  <link rel="shortcut icon" type="image/png" href="/assets/images/logos/divar.svg" />
-  <link rel="stylesheet" href="/assets/css/styles.css" />
-</head>
-
-<body>
-  <!--  Body Wrapper -->
-  <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
-    data-sidebar-position="fixed" data-header-position="fixed">
-    <!-- Sidebar Start -->
-    <%-include('./sidebar.ejs')%>
-    <!--  Sidebar End -->
-    <!--  Main wrapper -->
-    <div class="body-wrapper">
-      <!--  Header Start -->
-      <%-include('./header.ejs')%>
-      <!--  Header End -->
-      <div class="container-fluid">
-        <!--  Row 1 -->
-        <%-body%>
+  <body>
+    <!--  Body Wrapper -->
+    <div
+      class="page-wrapper"
+      id="main-wrapper"
+      data-layout="vertical"
+      data-navbarbg="skin6"
+      data-sidebartype="full"
+      data-sidebar-position="fixed"
+      data-header-position="fixed"
+    >
+      <!-- Sidebar Start -->
+      <%-include('./sidebar.ejs')%>
+      <!--  Sidebar End -->
+      <!--  Main wrapper -->
+      <div class="body-wrapper">
+        <!--  Header Start -->
+        <%-include('./header.ejs')%>
+        <!--  Header End -->
+        <div class="container-fluid">
+          <!--  Row 1 -->
+          <%-body%>
+        </div>
       </div>
     </div>
-  </div>
-  <script src="/assets/libs/jquery/dist/jquery.min.js"></script>
-  <script src="/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="/assets/js/sidebarmenu.js"></script>
-  <script src="/assets/js/app.min.js"></script>
-  <script src="/assets/libs/apexcharts/dist/apexcharts.min.js"></script>
-  <script src="/assets/libs/simplebar/dist/simplebar.js"></script>
-  <script src="/assets/js/dashboard.js"></script>
-</body>
+    <script type="text/javascript" src="/dist/js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="/dist/js/mapp.env.js"></script>
+    <script type="text/javascript" src="/dist/js/mapp.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        const app = new Mapp({
+          element: "#map-element",
+          presets: {
+            latlng: {
+              lat: 37.378765085533985, // عرض جغرافیایی فرودگاه کلاله
+              lng: 55.48883628674958, // طول جغرافیایی فرودگاه کلاله
+            },
+            zoom: 14,
+          },
+          apiKey:
+            "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjViZmU3YWY0ODI5NmMzOTc5ZjQ1YTQ3MzMwM2E2OTRhOTM1MmVkZTc1NTQ1NGQ0ODA3ZjI4NmY0NjJiY2M2YWEzNDgwOTZjM2E4YzMzZmI5In0.eyJhdWQiOiIyOTgxMyIsImp0aSI6IjViZmU3YWY0ODI5NmMzOTc5ZjQ1YTQ3MzMwM2E2OTRhOTM1MmVkZTc1NTQ1NGQ0ODA3ZjI4NmY0NjJiY2M2YWEzNDgwOTZjM2E4YzMzZmI5IiwiaWF0IjoxNzMyOTQ3MTYxLCJuYmYiOjE3MzI5NDcxNjEsImV4cCI6MTczNTQ1Mjc2MSwic3ViIjoiIiwic2NvcGVzIjpbImJhc2ljIl19.By6-1jVi7HIvdigFgXPouxwxIgMPcldkyzV8okUygIJ-qT8rjSm19u4O4_AQIJ9Y2LYY8gbzqVnmU9ViHvrv38a4DcGSw-vOTIpJw3Ur4AvlK8Xftt9eihq-7MXV0HkxEUZPmt42ihCGqZ4G63kJpuewrZ4JxYnSNvdJLbsPlNV8iywYS1ip_jcPOKyRpUFjo-nV6GAL4Vhv95B3iRIR8bogJxDCGAT0rJwtQC1QrIXxGsq3dAVDgWik_hdPS-6_8l7YZ5l60wOF7MrWSwm4G-Zxsl3YfHwfK82e7zU-oQKFFCC3xsy6mM1HZ9rtGzy2W9KzDAjatJovgneNxtL0eQ",
+          gestureHandling: true,
+          gestureHandlingOptions: {
+            duration: 1200,
+            text: {
+              touch: "نقشه را با دو انگشت حرکت دهید",
+              scroll: "برای بزرگنمایی نقشه از ctrl + scroll  استفاده کنید",
+              scrollMac:
+                "برای بزرگنمایی نقشه از \u2318  + scroll  استفاده کنید",
+            },
+          },
+        });
+        app.addLayers();
+        app.map.on("click", function (e) {
+          app.addMarker({
+            name: "advanced-marker",
+            latlng: {
+              lat: e.latlng.lat,
+              lng: e.latlng.lng,
+            },
+            icon: app.icons.red,
+            popup: false,
+          });
+          let {lat, lng} = e.latlng;
+          document.getElementById('lat').value = lat;
+          document.getElementById('lng').value = lng;
+        });
+      });
+    </script>
+    <script src="/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- <script src="/assets/libs/jquery/dist/jquery.min.js"></script> -->
+    <script src="/assets/js/sidebarmenu.js"></script>
+    <script src="/assets/js/app.min.js"></script>
+    <script src="/assets/libs/apexcharts/dist/apexcharts.min.js"></script>
+    <script src="/assets/libs/simplebar/dist/simplebar.js"></script>
+    <script src="/assets/js/dashboard.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+   <script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const form = document.querySelector("form");
+    
+    form.addEventListener("submit", function(event) {
+      let isValid = true;
+      const requiredFields = form.querySelectorAll("[required]");
 
+      requiredFields.forEach(field => {
+        if (!field.value) {
+          isValid = false;
+          field.classList.add("is-invalid"); // اضافه کردن کلاس برای نمایش خطا
+        } else {
+          field.classList.remove("is-invalid"); // حذف کلاس در صورت پر بودن فیلد
+        }
+      });
+
+      if (!isValid) {
+        event.preventDefault(); // جلوگیری از ارسال فرم
+        Toastify({
+          text: "لطفاً تمام فیلدهای الزامی را پر کنید.",
+          duration: 3000,
+          gravity: "top",
+          position: "left",
+          style: {
+            background: "linear-gradient(to right, #ff5f6d, #ffc371)",
+          },
+        }).showToast();
+      }
+    });
+  });
+</script>
+
+    
+  </body>
 </html>

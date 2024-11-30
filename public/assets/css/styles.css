@@ -17120,3 +17120,6 @@ ul {
 .hover-effect:hover {
   background-color: rgba(165, 41, 57, 0.1); /* رنگ هاور ملایم برای لیست */
 }
+.toastify.on.toastify-left.toastify-top {
+  max-width: 250px;
+}

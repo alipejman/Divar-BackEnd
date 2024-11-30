@@ -4,6 +4,7 @@ const { userRouter } = require('./modules/user/user.routes');
 const { categoryRouter } = require('./modules/category/category.routes');
 const { optionRouter } = require('./modules/option/option.routes');
 const { postRouter } = require('./modules/post/post.routes');
+const { getUserCount } = require('./modules/user/user.controller');
 
 const mainRouter = Router();
 mainRouter.use('/auth', authRouter);
@@ -15,7 +16,7 @@ mainRouter.get('/', (req, res) => {
     res.locals.layout = './layouts/web/main';
     res.render('./pages/home/index');
 })
-mainRouter.get('/admin', (req, res) => {
+mainRouter.get('/admin', getUserCount,(req, res) => {
     res.render('./pages/admin/dashboard');
 })
 mainRouter.get('/auth/login', (req, res) => {
