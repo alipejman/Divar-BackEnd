@@ -1,69 +1,77 @@
 <div class="col-lg-12 d-flex align-items-stretch">
-    <div class="card w-100">
+  <div class="card w-100">
+    <% if (showBack) { %>
       <div class="p-3">
-        <a href="/post/create" class="btn btn-danger">بازگشت به همه ی دسته ها</a>
+        <a href="/post/create" class="btn custom-btn w-100 text-center">
+          بازگشت به همه دسته‌ها
+        </a>
       </div>
-      <div class="p-3">
-        <ul>
-          <li>
-            <a
-              href="?slug="
-              class="w-100 p-3 d-block bg-light text-dark">
-              <span
-                class="ti nav-small-cap-icon fs-4"></span>
-              <span></span>
-            </a>
-          </li>
-        </ul>
-          <form action="/post/create" method="post" enctype="multipart/form-data">
-            <input type="hidden" name="lat" id="lat">
-            <input type="hidden" name="lng" id="lng">
-            <input type="hidden" name="category" id="category" value="">
-          <div class="p-2">
-            <label>انتخاب آدرس</label>
-            <div id="map-element" class="w-100" style="height: 300px"></div>
+    <% } %>
+    <div class="p-3">
+      <% if (!options) { %>
+        <% if (categories && Array.isArray(categories) && categories.length > 0) { %>
+          <ul class="list-unstyled">
+            <% categories.forEach(category => { %>
+              <li class="mb-2">
+                <a
+                  href="/post/create?slug=<%= category.slug %>"
+                  class="w-100 p-3 d-block bg-light text-dark rounded hover-effect"
+                >
+                  <span class="ti ti-<%= category.icon %> nav-small-cap-icon fs-4"></span>
+                  <span><%= category.name %></span>
+                </a>
+              </li>
+            <% }) %>
+          </ul>
+        <% } else { %>
+          <div class="text-center p-4">
+            <div class="alert alert-warning" role="alert">
+              <h5 class="alert-heading">متاسفیم!</h5>
+              <p>دسته‌ای وجود ندارد.</p>
+              <hr />
+              <p class="mb-0">لطفاً بعداً دوباره بررسی کنید.</p>
+            </div>
+            <a href="/post/create" class="btn btn-primary mt-3">ایجاد آگهی جدید</a>
           </div>
-          <div class="p-2">
-            <label>تصاویر آگهی</label>
-            <input type="file" name="images" multiple class="form-control" />
-          </div>
-          <div class="p-2">
-            <label>عنوان آگهی</label>
-            <input
-              type="text"
-              name="title_post"
-              placeholder="عنوان آگهی"
-              class="form-control" />
-          </div>
-          <div class="p-2">
-            <label>توضیحات آگهی</label>
-            <textarea class="form-control" name="description" placeholder="توضیحات آگهی"></textarea>
-          </div>
-          <div class="p-2">
-            <label>مبلغ با قیمت آگهی جهت نمایش</label>
-            <input
-              type="text"
-              name="amount"
-              placeholder="مبلغ"
-              class="form-control" />
-          </div>
-          <label></label>
-          <div class="p-2">
-            <select name="" class="form-select">
-              <option value=""></option>
-            </select>
-          </div>
-          <div class="p-2">
-            <input
-              type="text"
-              name=""
-              class="form-control"
-              placeholder="" />
-          </div>
+        <% } %>
+      <% } else { %>
+        <h4 class="mb-4">افزودن آگهی</h4>
         
-        <button type="submit" class="btn btn-danger">انتشار آگهی</button>
-          </form>
-      </div>
+        <div class="mb-3">
+          <label for="image" class="form-label">افزودن تصویر</label>
+          <input type="file" name="image" id="image" class="form-control" accept="image/*">
+        </div>
+
+        <div class="mb-3">
+          <label for="title" class="form-label">عنوان آگهی</label>
+          <input type="text" name="title-post" id="title" class="form-control" placeholder="عنوان آگهی را وارد کنید" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="description" class="form-label">توضیحات</label>
+          <textarea name="description" id="description" class="form-control" rows="4" placeholder="توضیحات آگهی را وارد کنید" required></textarea>
+        </div>
+
+        <h4 class="mb-3">گزینه‌ها</h4>
+        <% options.forEach(option => { %>
+          <div class="mb-3">
+            <label for="<%= option.key %>" class="form-label">
+              <%= option.title %>
+              <% if (option.required) { %> <span class="text-danger">*</span> <% } %>
+            </label>
+            <% if (option.type === "array") { %>
+              <select name="<%= option.key %>" id="<%= option.key %>" class="form-select" required="<%= option.required %>">
+                <option value="" disabled selected>لطفاً یک گزینه انتخاب کنید</option>
+                <% option.enum.forEach(item => { %>
+                  <option value="<%= item %>"><%= item %></option>
+                <% }) %>
+              </select>
+            <% } else { %>
+              <input type="text" name="<%= option.key %>" class="form-control" placeholder="<%= option.guid %>" id="<%= option.key %>" required="<%= option.required %>">
+            <% } %>
+          </div>
+        <% }) %>
+      <% } %>
     </div>
   </div>
-  
+</div>
