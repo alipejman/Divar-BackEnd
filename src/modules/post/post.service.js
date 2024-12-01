@@ -21,7 +21,7 @@ class postService {
 
   async create(dto) {
     return await this.#model.create(dto)
-  }
+  } 
 }
 
 module.exports = new postService();

@@ -27,6 +27,9 @@ class userController {
         res.status(500).send('خطا در دریافت تعداد کاربران');
     }
 }
+
+
+
 }
 
 module.exports = new userController();

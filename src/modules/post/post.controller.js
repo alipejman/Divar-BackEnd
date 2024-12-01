@@ -50,7 +50,6 @@ class postController {
 
   async create(req, res, next) {
     try {
-      console.log(req.body); // بررسی داده‌های دریافتی
       const {
         title_post: title,
         description: content,
@@ -58,34 +57,31 @@ class postController {
         lng,
         category,
       } = req.body;
-      delete req.body["title_post"]
-      delete req.body["description"]
-      delete req.body["lat"]
-      delete req.body["lng"]
-      delete req.body["category"]
+      console.log(req.body);
+      delete req.body["title_post"];
+      delete req.body["description"];
+      delete req.body["lat"];
+      delete req.body["lng"];
+      delete req.body["category"];
       const options = req.body;
       const newPost = await this.#service.create({
         title,
         content,
         coordinate: [lat, lng],
         category: new Types.ObjectId(category),
-        image: [],
-        options
+        image: req.files.map((file) => file.path),
+        options,
       });
-  
-      console.log(newPost); // چاپ پست جدید برای بررسی
-  
+
       return res.status(HttpCodes.CREATED).json({
         message: postMessage.created,
-        post: newPost // ارسال پست جدید در پاسخ
+        post: newPost,
       });
     } catch (error) {
-      console.error(error); // چاپ خطا در کنسول
+      console.error(error);
       next(error);
     }
   }
-  
-  
 }
 
 module.exports = new postController();

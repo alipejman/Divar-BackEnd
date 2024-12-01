@@ -68,6 +68,7 @@
             id="image"
             class="form-control"
             accept="image/*"
+            multiple
           />
         </div>
 
@@ -91,7 +92,7 @@
             class="form-control"
             rows="4"
             placeholder="توضیحات آگهی را وارد کنید"
-            required
+            required style="max-width: 100%; max-height: 300px;"
           ></textarea>
         </div>
 
@@ -105,7 +106,6 @@
           <% if (option.type === "array") { %>
           <select
             name="<%= option.title %>"
-            id="<%= option.key %>"
             class="form-select"
             required="<%= option.required %>"
           >
@@ -122,9 +122,7 @@
             name="<%= option.title %>"
             class="form-control"
             placeholder="<%= option.guid %>"
-            id="<%= option.key %>"
-            required="<%= option.required %>
-              "
+            required="<%= option.required %>"
           />
           <% } %>
         </div>
