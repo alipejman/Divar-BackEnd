@@ -1,170 +1,80 @@
 <div class="col-lg-12 d-flex align-items-stretch">
-  <div class="card w-100">
+  <div class="card w-100 shadow-sm rounded">
     <% if (showBack) { %>
-    <div class="p-3">
-      <a href="/post/create" class="btn custom-btn w-100 text-center">
-        بازگشت به همه دسته‌ها
-      </a>
-    </div>
+      <div class="p-3">
+        <a href="/post/create" class="btn" style="background-color: #A52939; color: white;">بازگشت به همه ی دسته ها</a>
+      </div>
     <% } %>
     <div class="p-3">
-      <% if (!options) { %> <% if (categories && Array.isArray(categories) &&
-      categories.length > 0) { %>
-      <ul class="list-unstyled">
-        <% categories.forEach(category => { %>
-        <li class="mb-2">
-          <a
-            href="/post/create?slug=<%= category.slug %>"
-            class="w-100 p-3 d-block bg-light text-dark rounded hover-effect"
-          >
-            <span
-              class="ti ti-<%= category.icon %> nav-small-cap-icon fs-4"
-            ></span>
-            <span><%= category.name %></span>
-          </a>
-        </li>
-        <% }) %>
-      </ul>
-      <% } else { %>
-      <div class="text-center p-4">
-        <div class="alert alert-warning" role="alert">
-          <h5 class="alert-heading">متاسفیم!</h5>
-          <p>دسته‌ای وجود ندارد.</p>
-          <hr />
-          <p class="mb-0">لطفاً بعداً دوباره بررسی کنید.</p>
-        </div>
-        <a href="/post/create" class="btn btn-primary mt-3">ایجاد آگهی جدید</a>
-      </div>
-      <% } %> <% } else { %>
-      <form action="/post/create" method="post" enctype="multipart/form-data">
-        <h4 class="mb-4">افزودن آگهی</h4>
-        <div class="mb-3">
-          <label for="map-element" class="form-label">محدوده ملک</label>
-          <div
-            id="map-element"
-            class="w-100"
-            style="
-              height: 300px;
-              border: 1px solid #ccc;
-              border-radius: 5px;
-              z-index: 0;
-            "
-          ></div>
-          <input type="hidden" name="lat" id="lat" />
-          <input type="hidden" name="lng" id="lng" />
-          <input
-            type="hidden"
-            name="category"
-            id="category"
-            value="<%= category %>"
-          />
-        </div>
-
-        <div class="mb-3">
-          <label for="image" class="form-label">افزودن تصویر</label>
-          <input
-            type="file"
-            name="image"
-            id="image"
-            class="form-control"
-            accept="image/*"
-            multiple
-          />
-        </div>
-
-        <div class="mb-3">
-          <label for="title" class="form-label">عنوان آگهی</label>
-          <input
-            type="text"
-            name="title_post"
-            id="title"
-            class="form-control"
-            placeholder="عنوان آگهی را وارد کنید"
-            required
-          />
-        </div>
-
-        <div class="mb-3">
-          <label for="description" class="form-label">توضیحات</label>
-          <textarea
-            name="description"
-            id="description"
-            class="form-control"
-            rows="4"
-            placeholder="توضیحات آگهی را وارد کنید"
-            required style="max-width: 100%; max-height: 300px;"
-          ></textarea>
-        </div>
-
-        <h4 class="mb-3">گزینه‌ها</h4>
-        <% options.forEach(option => { %>
-        <div class="mb-3">
-          <label for="<%= option.key %>" class="form-label">
-            <%= option.title %> <% if (option.required) { %>
-            <span class="text-danger">*</span> <% } %>
-          </label>
-          <% if (option.type === "array") { %>
-          <select
-            name="<%= option.title %>"
-            class="form-select"
-            required="<%= option.required %>"
-          >
-            <option value="" disabled selected>
-              لطفاً یک گزینه انتخاب کنید
-            </option>
-            <% option.enum.forEach(item => { %>
-            <option value="<%= item %>"><%= item %></option>
+      <% if (!options) { %>
+        <% if (categories && categories.length > 0) { %>
+          <ul class="list-unstyled">
+            <% categories.forEach(category => { %>
+              <li class="mb-2">
+                <a href="?slug=<%= category.slug %>" class="d-flex align-items-center p-3 bg-light text-dark rounded shadow-sm">
+                  <span class="ti ti-<%= category.icon %> nav-small-cap-icon fs-4 me-2"></span>
+                  <span><%= category.name %></span>
+                </a>
+              </li>
             <% }) %>
-          </select>
-          <% } else { %>
-          <input
-            type="text"
-            name="<%= option.title %>"
-            class="form-control"
-            placeholder="<%= option.guid %>"
-            required="<%= option.required %>"
-          />
-          <% } %>
-        </div>
-        <% }) %>
-
-        <button type="submit" class="btn btn-primary">انتشار آگهی</button>
-      </form>
+          </ul>
+        <% } else { %>
+          <div class="alert alert-warning" role="alert">
+            آگهی وجود ندارد. لطفاً زمانی دیگر بررسی کنید.
+          </div>
+          <div class="p-3">
+            <a href="/post/create" class="btn btn-danger">ایجاد آگهی جدید</a>
+          </div>
+        <% } %>
+      <% } else { %>
+        <form action="/post/create" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+          <input type="hidden" name="lat" id="lat">
+          <input type="hidden" name="lng" id="lng">
+          <input type="hidden" name="category" id="category" value="<%= category %>">
+          
+          <div class="mb-3">
+            <label class="form-label">انتخاب آدرس</label>
+            <div id="map-element" class="w-100" style="height: 300px; border: 1px solid #ccc; border-radius: 5px;"></div>
+          </div>
+          
+          <div class="mb-3">
+            <label class="form-label">تصاویر آگهی</label>
+            <input type="file" name="images" multiple class="form-control" />
+          </div>
+          
+          <div class="mb-3">
+            <label class="form-label">عنوان آگهی</label>
+            <input type="text" name="title_post" placeholder="عنوان آگهی" class="form-control" required />
+          </div>
+          
+          <div class="mb-3">
+            <label class="form-label">توضیحات آگهی</label>
+            <textarea class="form-control" name="description" placeholder="توضیحات آگهی" required></textarea>
+          </div>
+          
+          <div class="mb-3">
+            <label class="form-label">مبلغ با قیمت آگهی جهت نمایش</label>
+            <input type="text" name="amount" placeholder="مبلغ" class="form-control" required />
+          </div>
+          
+          <% options.forEach(option => { %>
+            <div class="mb-3">
+              <label class="form-label"><%= option.title %><%= option.required ? " * " : "" %></label>
+              <% if (option.type === "array") { %>
+                <select name="<%= option.title %>" class="form-select" required>
+                  <% option.enum.forEach(item => { %>
+                    <option value="<%= item %>"><%= item %></option>
+                  <% }) %>
+                </select>
+              <% } else { %>
+                <input type="text" name="<%= option.title %>" class="form-control" placeholder="<%= option.guid %>" required />
+              <% } %>
+            </div>
+          <% }) %>
+          
+          <button type="submit" class="btn btn-danger">انتشار آگهی</button>
+        </form>
       <% } %>
     </div>
   </div>
 </div>
-
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const form = document.querySelector("form");
-    const submitButton = form.querySelector("button[type='submit']");
-
-    submitButton.addEventListener("click", function (event) {
-      let isValid = true;
-      const requiredFields = form.querySelectorAll("[required]");
-
-      requiredFields.forEach((field) => {
-        if (!field.value) {
-          isValid = false;
-          field.classList.add("is-invalid"); // اضافه کردن کلاس برای نمایش خطا
-        } else {
-          field.classList.remove("is-invalid"); // حذف کلاس در صورت پر بودن فیلد
-        }
-      });
-
-      if (!isValid) {
-        event.preventDefault(); // جلوگیری از ارسال فرم
-        Toastify({
-          text: "لطفاً تمام فیلدهای الزامی را پر کنید.",
-          duration: 3000,
-          gravity: "top",
-          position: "left",
-          style: {
-            background: "linear-gradient(to right, #ff5f6d, #ffc371)",
-          },
-        }).showToast();
-      }
-    });
-  });
-</script>

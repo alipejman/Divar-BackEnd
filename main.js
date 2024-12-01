@@ -20,14 +20,17 @@ async function main() {
     app.use(expressEjsLayouts);
     app.set('view engine', 'ejs');
     app.set('layout', './layouts/admin/main');
+    const moment = require("jalali-moment");
+    const methodOverride = require("method-override");
 
     const PORT = process.env.PORT;
 
 
+
+    app.use(methodOverride('_method'));
     app.use(mainRouter);
-    
+    app.locals.moment = moment;
     swaggerConfig(app);
-    
     
     require('./src/config/mongoose.config');
 
