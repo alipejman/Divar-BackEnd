@@ -1,6 +1,5 @@
 const autoBind = require("auto-bind");
 const HttpCodes = require("http-codes");
-const PostMessage = require("./post.message");
 const categoryModel = require("../category/category.model");
 const createHttpError = require("http-errors");
 const postService = require("./post.service");
@@ -8,6 +7,9 @@ const { Types } = require("mongoose");
 const { removePropertyInObject } = require("../../common/utils/function");
 const utf8 = require("utf8");
 const { getAddressDetail } = require("../../common/utils/http");
+const { PostMessage } = require("./post.message");
+const PostModel = require("./post.model");
+
 
 class postController {
   #service;
@@ -51,19 +53,21 @@ class postController {
         next(error);
     }
 }
-async create (req, res, next) {
+async create(req, res, next) {
     try {
         const userId = req?.user?._id;
         const images = req?.files?.map(image => image?.path?.slice(7));
-        const {title_post: title, description: content, lat, lng, category, amount} = req.body;
+        const { title_post: title, description: content, lat, lng, category, amount } = req.body;
         const options = removePropertyInObject(req.body, ["amount", 'title_post', "description", "lat", "lng", "category", "images"]);
+        
         for (let key in options) {
             let value = options[key];
             delete options[key];
             key = utf8.decode(key);
             options[key] = value;
         }
-        const {address, province, city, district} = await getAddressDetail(lat, lng);
+        
+        const { address, province, city, district } = await getAddressDetail(lat, lng);
         await this.#service.create({
             userId,
             title,
@@ -78,28 +82,15 @@ async create (req, res, next) {
             city,
             district
         });
-        this.success_message = PostMessage.Created;
-        return res.redirect('/post/my');
+        
+        this.success_message = PostMessage.Created; // تنظیم پیام موفقیت
+        return res.redirect('/post/my'); // هدایت به صفحه پست‌ها
     } catch (error) {
         console.log(error);
         next(error);
     }
 }
-async findMyPosts (req, res, next) {
-  try {
-      const userId = req.user._id;
-      const posts = await this.#service.find(userId);
-      res.render("./pages/admin/posts.ejs", {
-          posts,
-          count: posts.length,
-          success_message: this.success_message,
-          error_message: null
-      });
-      this.success_message = null;
-  } catch (error) {
-      next(error);
-  }
-}
+
 async findMyPosts (req, res, next) {
     try {
         const userId = req.user._id;
@@ -149,6 +140,16 @@ async postList (req, res, next) {
 
     } catch (error) {
         next(error);
+    }
+}
+
+async getPostCount(req, res) {
+    try {
+        const postCount = await PostModel.length; // تعداد کل پست ها
+        res.render('pages/admin/dashboard', { postCount }); // ارسال تعداد پست ها به قالب
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('خطا در دریافت تعداد پست ها');
     }
 }
 }

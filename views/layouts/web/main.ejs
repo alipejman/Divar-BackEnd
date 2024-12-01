@@ -4,16 +4,29 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/home/global.css">
-    <link rel="stylesheet" href="/home/header.css">
+    <link rel="stylesheet" href="/home/global.css" />
+    <link rel="stylesheet" href="/home/header.css" />
     <link rel="stylesheet" href="/home/style.css" />
+    <link rel="stylesheet" href="/home/post.css" />
     <title>دیوار</title>
-    <link rel="shortcut icon" type="image/png" href="/assets/images/logos/divar.svg" />
+    <link
+      rel="shortcut icon"
+      type="image/png"
+      href="/assets/images/logos/divar.svg"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+    />
+
   </head>
   <body dir="rtl">
     <section class="grid">
-        <%-include('./header.ejs')%>
-        <%-include('./aside.ejs')%>
+      <%-include('./header.ejs')%> <%-include('./aside.ejs')%>
       <main>
         <div class="main-button">
           <a href="#">
@@ -22,10 +35,9 @@
           </a>
         </div>
         <h1 class="main-title">دیوار تهران:‌ انواع آگهی‌ها و خدمات در تهران</h1>
-        <div class="main-grid-card">
-          <%-body%>
-        </div>
+        <div class="main-grid-card"><%-body%></div>
       </main>
     </section>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.all.min.js"></script>
   </body>
 </html>

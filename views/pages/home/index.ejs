@@ -1,16 +1,68 @@
 <div class="main-gird-posts">
-  <div class="main-post">
-    <a href="./post.html" class="post-link">
-      <article>
-        <div class="main-post-detail">
-          <h2 class="main-post-title">آیفون ۱۴ پرومکس</h2>
-          <div class="main-post-price">۱۰۰,۰۰۰,۰۰۰ تومان</div>
-          <div class="main-post-time">لحظاتی پیش در ایران</div>
-        </div>
-        <div class="main-post-thumbnail">
-          <img src="/home/img/iphone-14-pro-max-purple-1.jpg" alt="" />
-        </div>
-      </article>
-    </a>
-  </div>
+  <% for (let post of posts) { %>
+    <div class="main-post">
+      <a href="/post/<%= post._id %>" class="post-link">
+        <article>
+          <div class="main-post-thumbnail">
+            <img src="/<%= post.images?.[0] || 'path/to/default-image.jpg' %>" alt="<%= post.title %>" />
+          </div>
+          <div class="main-post-detail">
+            <h2 class="main-post-title"><%= post.title %></h2>
+            <div class="main-post-price"><%= post.amount %> تومان</div>
+            <div class="main-post-time">
+              <%= moment(post.createdAt).locale("fa").format(`jDD jMMMM HH:mm`) %>
+            </div>
+          </div>
+        </article>
+      </a>
+    </div>
+  <% } %>
 </div>
+
+<style>
+  .main-gird-posts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    padding: 20px;
+  }
+  .main-post {
+    flex: 1 1 calc(33.333% - 20px); /* سه ستون */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+    background-color: #fff;
+  }
+  .main-post:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  }
+  .post-link {
+    text-decoration: none;
+    color: inherit;
+  }
+  .main-post-thumbnail img {
+    width: 100%;
+    height: auto;
+    border-bottom: 2px solid #e74c3c;
+  }
+  .main-post-detail {
+    padding: 15px;
+  }
+  .main-post-title {
+    font-size: 1.5em;
+    margin: 0 0 10px;
+    color: #333;
+  }
+  .main-post-price {
+    font-size: 1.2em;
+    color: #e74c3c;
+    margin: 5px 0;
+  }
+  .main-post-time {
+    font-size: 0.9em;
+    color: #7f8c8d;
+  }
+</style>

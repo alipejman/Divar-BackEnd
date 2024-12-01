@@ -1,5 +1,5 @@
 const authMessages = {
-    sendOtpSuccessfully: 'send otp successfully',
+    sendOtpSuccessfully: 'کد تایید با موفقیت ارسال شد',
     notFound: 'user not found',
     otpCodeNotExpireIn: 'otp code not expire in please try later',
     otpCodeExpireIn: 'otp code expire in please send a new Code',

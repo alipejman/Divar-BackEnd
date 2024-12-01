@@ -39,7 +39,6 @@ class authService {
     return user;
 }
 
-
 async checkOTP(mobile, code) {
   const now = new Date().getTime();
   const user = await this.checkExistByMobile(mobile);
