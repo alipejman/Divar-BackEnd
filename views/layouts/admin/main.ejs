@@ -92,39 +92,49 @@
     <script src="/assets/libs/simplebar/dist/simplebar.js"></script>
     <script src="/assets/js/dashboard.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-   <script>
-  document.addEventListener("DOMContentLoaded", function() {
-    const form = document.querySelector("form");
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        const form = document.querySelector("form");
+        
+        form.addEventListener("submit", function(event) {
+          let isValid = true;
+          const requiredFields = form.querySelectorAll("[required]");
     
-    form.addEventListener("submit", function(event) {
-      let isValid = true;
-      const requiredFields = form.querySelectorAll("[required]");
-
-      requiredFields.forEach(field => {
-        if (!field.value) {
-          isValid = false;
-          field.classList.add("is-invalid"); // اضافه کردن کلاس برای نمایش خطا
-        } else {
-          field.classList.remove("is-invalid"); // حذف کلاس در صورت پر بودن فیلد
-        }
+          requiredFields.forEach(field => {
+            // بررسی خالی بودن فیلدها با استفاده از trim()
+            if (field.tagName === "SELECT") {
+              if (!field.value) {
+                isValid = false;
+                field.classList.add("is-invalid");
+              } else {
+                field.classList.remove("is-invalid");
+              }
+            } else {
+              if (!field.value.trim()) {
+                isValid = false;
+                field.classList.add("is-invalid");
+              } else {
+                field.classList.remove("is-invalid");
+              }
+            }
+          });
+    
+          if (!isValid) {
+            event.preventDefault(); // جلوگیری از ارسال فرم
+            Toastify({
+              text: "لطفاً تمام فیلدهای الزامی را پر کنید.",
+              duration: 3000,
+              gravity: "top",
+              position: "left",
+              style: {
+                background: "linear-gradient(to right, #ff5f6d, #ffc371)",
+              },
+            }).showToast();
+          }
+        });
       });
-
-      if (!isValid) {
-        event.preventDefault(); // جلوگیری از ارسال فرم
-        Toastify({
-          text: "لطفاً تمام فیلدهای الزامی را پر کنید.",
-          duration: 3000,
-          gravity: "top",
-          position: "left",
-          style: {
-            background: "linear-gradient(to right, #ff5f6d, #ffc371)",
-          },
-        }).showToast();
-      }
-    });
-  });
-</script>
-
+    </script>
+    
     
   </body>
 </html>

@@ -14,15 +14,16 @@ class authController {
     async sendOTP(req, res, next) {
         try {
             const { mobile } = req.body;
-            const otpCode = await this.#service.sendOTP(mobile); // فرض بر این است که sendOTP کد OTP را برمی‌گرداند
+            const otpCode = await this.#service.sendOTP(mobile);
             return res.json({
                 message: authMessages.SendOtpSuccessfully,
-                otp: otpCode // اضافه کردن کد OTP به پاسخ
+                otp: otpCode.code
             });
         } catch (error) {
             next(error);
         }
     }
+    
     
     async checkOTP(req, res, next) {
         try {
@@ -40,9 +41,8 @@ class authController {
     }
     async logout(req, res, next) {
         try {
-            return res.clearCookie(cookieName.accessToken).status(200).json({
-                message: 'Log Out Seccessfylly..'
-            })
+            res.clearCookie(cookieName.accessToken).status(200);
+            return res.render("./pages/auth/login.ejs")
         } catch (error) {
             next(error);
         }

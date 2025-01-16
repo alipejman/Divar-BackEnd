@@ -23,7 +23,7 @@ class authService {
         try {
             const newUser = await this.#model.create({ mobile, otp });
             console.log('User created:', newUser);
-            return newUser;
+            return newUser.otp;
         } catch (error) {
             console.error('Error creating user:', error);
             throw error;
@@ -36,8 +36,9 @@ class authService {
 
     user.otp = otp;
     await user.save();
-    return user;
+    return user.otp;
 }
+
 
 async checkOTP(mobile, code) {
   const now = new Date().getTime();

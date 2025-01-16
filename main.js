@@ -29,9 +29,9 @@ async function main() {
 
     app.use(methodOverride('_method'));
     app.use(mainRouter);
-    app.locals.moment = moment;
+    app.locals.moment = moment; 
     swaggerConfig(app);
-    
+
     require('./src/config/mongoose.config');
 
     

@@ -8,7 +8,7 @@
               <img src="/assets/images/logos/divar.svg" width="180" alt="" />
             </a>
             <p class="text-center">ورود به حساب کاربری</p>
-            <form id="otpForm" action="/auth/send-otp" method="post">
+            <form id="otpForm" action="/auth/send-otp" method="post" onsubmit="sendOtp(event)">
               <div class="mb-3">
                 <label for="mobile" class="form-label">شماره موبایل</label>
                 <input type="text" class="form-control" id="mobile" required />
@@ -21,18 +21,64 @@
               </div>
               <button type="submit" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">دریافت کد تایید</button>
             </form>
-            <% if (typeof otp !== 'undefined') { %>
-              <form id="verifyOtpForm">
+            <div id="otpSection" style="display: none;">
+              <form id="verifyOtpForm" onsubmit="verifyOtp(event)">
                 <div class="mb-3">
                   <label for="otpCode" class="form-label">کد تایید</label>
                   <input type="text" class="form-control" id="otpCode" required />
                 </div>
                 <button type="submit" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">تأیید کد</button>
               </form>
-            <% } %>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<script>
+  async function sendOtp(event) {
+    event.preventDefault();
+    const mobile = document.getElementById('mobile').value;
+
+    const response = await fetch('/auth/send-otp', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ mobile }),
+    });
+
+    const data = await response.json();
+    if (response.ok) {
+        document.getElementById('otpSection').style.display = 'block'; 
+        document.getElementById('otpCode').value = data.otp;
+    } else {
+        alert(data.message); 
+    }
+}
+
+
+
+  async function verifyOtp(event) {
+    event.preventDefault();
+    const mobile = document.getElementById('mobile').value;
+    const code = document.getElementById('otpCode').value;
+
+    const response = await fetch('/auth/check-otp', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ mobile, code }),
+    });
+
+    if (response.ok) {
+      window.location.href = '/'; 
+    } else {
+      const data = await response.json();
+      alert(data.message); 
+    }
+  }
+</script>

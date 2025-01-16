@@ -1,80 +1,262 @@
 <div class="col-lg-12 d-flex align-items-stretch">
   <div class="card w-100 shadow-sm rounded">
     <% if (showBack) { %>
-      <div class="p-3">
-        <a href="/post/create" class="btn" style="background-color: #A52939; color: white;">بازگشت به همه ی دسته ها</a>
-      </div>
+    <div class="p-3">
+      <a
+        href="/post/create"
+        class="btn"
+        style="background-color: #a52939; color: white"
+        >بازگشت به همه ی دسته ها</a
+      >
+    </div>
     <% } %>
     <div class="p-3">
-      <% if (!options) { %>
-        <% if (categories && categories.length > 0) { %>
-          <ul class="list-unstyled">
-            <% categories.forEach(category => { %>
-              <li class="mb-2">
-                <a href="?slug=<%= category.slug %>" class="d-flex align-items-center p-3 bg-light text-dark rounded shadow-sm">
-                  <span class="ti ti-<%= category.icon %> nav-small-cap-icon fs-4 me-2"></span>
-                  <span><%= category.name %></span>
-                </a>
-              </li>
-            <% }) %>
-          </ul>
-        <% } else { %>
-          <div class="alert alert-warning" role="alert">
-            آپشنی وجود ندارد. لطفاً زمانی دیگر بررسی کنید.
-          </div>
-          <div class="p-3">
-            <a href="/post/create" class="btn btn-danger">ایجاد آگهی جدید</a>
-          </div>
-        <% } %>
+      <% if (!options) { %> <% if (categories && categories.length > 0) { %>
+      <ul class="list-unstyled">
+        <% categories.forEach(category => { %>
+        <li class="mb-2">
+          <a
+            href="?slug=<%= category.slug %>"
+            class="d-flex align-items-center p-3 bg-light text-dark rounded shadow-sm"
+          >
+            <span
+              class="ti ti-<%= category.icon %> nav-small-cap-icon fs-4 me-2"
+            ></span>
+            <span><%= category.name %></span>
+          </a>
+        </li>
+        <% }) %>
+      </ul>
       <% } else { %>
-        <form action="/post/create" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
-          <input type="hidden" name="lat" id="lat">
-          <input type="hidden" name="lng" id="lng">
-          <input type="hidden" name="category" id="category" value="<%= category %>">
-          
-          <div class="mb-3">
-            <label class="form-label">انتخاب آدرس</label>
-            <div id="map-element" class="w-100" style="height: 300px; border: 1px solid #ccc; border-radius: 5px;"></div>
+      <div class="alert alert-warning" role="alert">
+        آپشنی وجود ندارد. لطفاً زمانی دیگر بررسی کنید.
+      </div>
+      <div class="p-3">
+        <a href="/post/create" class="btn btn-danger">ایجاد آگهی جدید</a>
+      </div>
+      <% } %> <% } else { %>
+      <form
+        action="/post/create"
+        method="post"
+        enctype="multipart/form-data"
+        class="needs-validation"
+        novalidate
+        onsubmit="return validateForm();"
+      >
+        <input type="hidden" name="lat" id="lat" />
+        <input type="hidden" name="lng" id="lng" />
+        <input
+          type="hidden"
+          name="category"
+          id="category"
+          value="<%= category %>"
+        />
+
+        <div class="mb-3">
+          <label class="form-label">انتخاب آدرس</label>
+          <div
+            id="map-element"
+            class="w-100"
+            style="height: 300px; border: 1px solid #ccc; border-radius: 5px"
+          ></div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">تصاویر آگهی</label>
+          <input
+            type="file"
+            name="images"
+            id="imageUpload"
+            multiple
+            class="form-control"
+            accept="image/*"
+            required
+            style="display: none"
+          />
+          <div class="image-preview" id="imagePreview">
+            <span>تصاویر انتخاب شده را اینجا ببینید</span>
           </div>
-          
-          <div class="mb-3">
-            <label class="form-label">تصاویر آگهی</label>
-            <input type="file" name="images" multiple class="form-control" />
+          <button
+            type="button"
+            class="btn btn-secondary mt-2"
+            onclick="document.getElementById('imageUpload').click();"
+          >
+            انتخاب تصاویر
+          </button>
+          <div id="imageWarning" class="alert alert-danger mt-2" style="display: none;">
+            لطفاً حداقل یک تصویر بارگذاری کنید.
           </div>
-          
-          <div class="mb-3">
-            <label class="form-label">عنوان آگهی</label>
-            <input type="text" name="title_post" placeholder="عنوان آگهی" class="form-control" required />
-          </div>
-          
-          <div class="mb-3">
-            <label class="form-label">توضیحات آگهی</label>
-            <textarea class="form-control" name="description" placeholder="توضیحات آگهی" required></textarea>
-          </div>
-          
-          <div class="mb-3">
-            <label class="form-label">مبلغ با قیمت آگهی جهت نمایش</label>
-            <input type="text" name="amount" placeholder="مبلغ" class="form-control" required />
-          </div>
-          
-          <% options.forEach(option => { %>
-            <div class="mb-3">
-              <label class="form-label"><%= option.title %><%= option.required ? " * " : "" %></label>
-              <% if (option.type === "array") { %>
-                <select name="<%= option.title %>" class="form-select" required>
-                  <% option.enum.forEach(item => { %>
-                    <option value="<%= item %>"><%= item %></option>
-                  <% }) %>
-                </select>
-              <% } else { %>
-                <input type="text" name="<%= option.title %>" class="form-control" placeholder="<%= option.guid %>" required />
-              <% } %>
-            </div>
-          <% }) %>
-          
-          <button type="submit" class="btn btn-danger">انتشار آگهی</button>
-        </form>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">عنوان آگهی</label>
+          <input
+            type="text"
+            name="title_post"
+            placeholder="عنوان آگهی"
+            class="form-control"
+            required
+            minlength="3"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">توضیحات آگهی</label>
+          <textarea
+            class="form-control"
+            name="description"
+            placeholder="توضیحات آگهی"
+            required
+            minlength="10"
+          ></textarea>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">مبلغ با قیمت آگهی جهت نمایش</label>
+          <input
+            type="number"
+            name="amount"
+            placeholder="مبلغ"
+            class="form-control"
+            required
+            min="0"
+          />
+        </div>
+
+        <% options.forEach(option => { %>
+        <div class="mb-3">
+          <label class="form-label"
+            ><%= option.title %><%= option.required ? " * " : "" %></label
+          >
+          <% if (option.type === "array") { %>
+          <select name="<%= option.title %>" class="form-select" required>
+            <% option.enum.forEach(item => { %>
+            <option value="<%= item %>"><%= item %></option>
+            <% }) %>
+          </select>
+          <% } else { %>
+          <input
+            type="text"
+            name="<%= option.title %>"
+            class="form-control"
+            placeholder="<%= option.guid %>"
+            required
+            minlength="1"
+          />
+          <% } %>
+        </div>
+        <% }) %>
+
+        <button type="submit" class="btn btn-danger">انتشار آگهی</button>
+      </form>
       <% } %>
     </div>
   </div>
 </div>
+
+<style>
+  .image-preview {
+    display: flex;
+    flex-wrap: wrap;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    min-height: 100px;
+    align-items: center;
+    justify-content: center;
+    background-color: #f9f9f9;
+  }
+
+  .image-preview .image-container {
+    position: relative;
+    margin: 5px;
+  }
+
+  .image-preview img {
+    width: 100px; /* عرض ثابت برای تصاویر */
+    height: 100px; /* ارتفاع ثابت برای تصاویر */
+    object-fit: cover; /* حفظ نسبت ابعاد تصویر */
+    border-radius: 5px;
+    border: 1px solid #ddd; /* حاشیه برای زیبایی */
+  }
+
+  .remove-image {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: rgba(255, 0, 0, 0.7);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+</style>
+
+<script>
+  const imageUpload = document.getElementById("imageUpload");
+  const imagePreview = document.getElementById("imagePreview");
+  const imageWarning = document.getElementById("imageWarning");
+  let selectedFiles = [];
+
+  imageUpload.addEventListener("change", function (event) {
+    const files = event.target.files;
+    imagePreview.innerHTML = "";
+    selectedFiles = [];
+
+    if (files.length > 0) {
+      Array.from(files).forEach((file, index) => {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          const container = document.createElement("div");
+          container.classList.add("image-container");
+
+          const img = document.createElement("img");
+          img.src = e.target.result;
+
+          const removeButton = document.createElement("button");
+          removeButton.classList.add("remove-image");
+          removeButton.innerHTML = "&times;";
+          removeButton.onclick = function () {
+            container.remove();
+            selectedFiles.splice(index, 1);
+            imageUpload.files = new DataTransfer().files;
+            selectedFiles.forEach((file) => {
+              const dataTransfer = new DataTransfer();
+              dataTransfer.items.add(file);
+              imageUpload.files = dataTransfer.files;
+            });
+          };
+
+          container.appendChild(img);
+          container.appendChild(removeButton);
+          imagePreview.appendChild(container);
+          selectedFiles.push(file);
+        };
+        reader.readAsDataURL(file);
+      });
+      imageWarning.style.display = "none"; // مخفی کردن هشدار
+    } else {
+      imagePreview.innerHTML = "<span>تصاویر انتخاب شده را اینجا ببینید</span>";
+      imageWarning.style.display = "none"; // مخفی کردن هشدار
+    }
+  });
+
+  function validateForm() {
+    if (selectedFiles.length === 0) {
+      imageWarning.style.display = "block"; // نمایش هشدار
+      return false; // جلوگیری از ارسال فرم
+    }
+    return true; // اجازه ارسال فرم
+  }
+</script>
+
+<!-- Include Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
